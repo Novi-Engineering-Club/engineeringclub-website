@@ -1,0 +1,175 @@
+body {
+  margin: 0;
+  font-family: 'Montserrat', Arial, sans-serif;
+  background: #f5f7fa;
+  color: #222;
+}
+
+header {
+  background: linear-gradient(120deg, #035f2e, #033216 80%);
+  color: #fff;
+  padding-bottom: 60px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 30px 0 30px;
+}
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s;
+}
+
+nav a:hover {
+  opacity: 0.8;
+}
+
+.hero {
+  max-width: 700px;
+  margin: 80px auto 0 auto;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  line-height: 1.1;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 28px;
+}
+
+.cta-btn {
+  background: #fff;
+  color: #1d711d;
+  padding: 15px 36px;
+  border: none;
+  border-radius: 32px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  transition: background 0.2s, color 0.2s;
+}
+
+.cta-btn:hover {
+  background: #1d711d;
+  color: #fff;
+}
+
+section {
+  max-width: 900px;
+  margin: 60px auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  padding: 36px 28px;
+}
+
+section h2 {
+  font-size: 2rem;
+  color: #1d711d;
+  margin-bottom: 18px;
+}
+
+.about p, .join p {
+  font-size: 1.1rem;
+}
+
+img {
+    max-width: 50%;
+    max-height: 50%;
+}
+
+.photos ul {
+  padding-left: 20px;
+}
+
+.photos li {
+  margin-bottom: 18px;
+  font-size: 1.05rem;
+}
+
+.join form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.join input, .join button {
+  padding: 12px 14px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+}
+
+.join input {
+  background: #f0f6ff;
+  flex: 1 1 180px;
+}
+
+.join button {
+  background: #1d711d;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.join button:hover {
+  background: #1d711d;
+}
+
+footer {
+  text-align: center;
+  font-size: 0.98rem;
+  color: #888;
+  margin: 44px 0 14px 0;
+}
+
+@media (max-width: 700px) {
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px 10px 0 10px;
+  }
+  .hero h1 {
+    font-size: 2.1rem;
+  }
+  section {
+    padding: 20px 10px;
+    margin: 40px 8px;
+  }
+  .join form {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
