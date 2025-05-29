@@ -176,6 +176,47 @@ footer {
   margin: 44px 0 14px 0;
 }
 
+/* Dark Mode and light mode switcher */
+
+
+.dark-mode {
+  background-color: black;
+  color: white;
+}
+
+.dark-mode section#about {
+  background-color: #333;
+  color: white;
+}
+
+.dark-mode section#photos {
+  background-color: #333;
+  color: white;
+}
+
+.dark-mode section#join {
+  background-color: #333;
+  color: white;
+}
+
+.toggle-theme-btn {
+  margin-left: auto;
+  background: #fff;
+  color: #1d711d;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.toggle-theme-btn:hover {
+  background: #1d711d;
+  color: #fff;
+}
+
 @media (max-width: 700px) {
   nav {
     flex-direction: column;

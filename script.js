@@ -33,3 +33,8 @@ function four() {
     elements[i].style.flex = "25%";
   }
 }
+
+function toggleDarkMode() {
+    var element = document.body;
+    element.classList.toggle("dark-mode");
+ }
