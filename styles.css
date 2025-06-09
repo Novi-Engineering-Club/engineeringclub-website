@@ -194,9 +194,18 @@ footer {
   color: white;
 }
 
+.dark-mode section#sponsors {
+  background-color: #333;
+  color: white;
+}
+
 .dark-mode section#join {
   background-color: #333;
   color: white;
+}
+
+.dark-mode p#instagram-footer {
+  color: #1d711d;
 }
 
 .toggle-theme-btn {
