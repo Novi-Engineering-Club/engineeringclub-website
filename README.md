@@ -1,1 +1,4 @@
-> Novi Engineering interest group public site.
+>Novi engineering website
+>Has contacts
+>Has images from our season
+>Has interest form
