@@ -1,4 +1,4 @@
->Novi engineering website
->Has contacts
+>Novi engineering website is an official website for novi high school's engineering club
 >Has images from our season
->Has interest form
+>Has google form inserted into website
+>Has stiling.
