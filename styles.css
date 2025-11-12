@@ -244,3 +244,9 @@ footer {
     gap: 10px;
   }
 }
+.about1{
+  width:fit-content;
+  height: fit-content;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  align-self: center;
+}
