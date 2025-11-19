@@ -245,11 +245,8 @@ footer {
   }
 }
 .about1{
-  width:100px;
-  height: 100px;
+  width:auto;
+  height: auto;
   box-shadow: 0 4px 24px rgba(0,0,0,0.08);
   align-self: center;
-}
-.table{
-  margin: 50px;
 }
