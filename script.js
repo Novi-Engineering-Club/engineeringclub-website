@@ -37,4 +37,114 @@ function four() {
 function toggleDarkMode() {
     var element = document.body;
     element.classList.toggle("dark-mode");
- }
+}
+
+// Image Modal functionality - wait for DOM to load
+document.addEventListener('DOMContentLoaded', function() {
+    // Get DOM elements after they're loaded
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const closeBtn = document.querySelector('.close-btn');
+    const currentImageNum = document.getElementById('currentImageNum');
+    const totalImages = document.getElementById('totalImages');
+
+    // Image data array
+    const images = [
+        'images/photos/1.jpg',
+        'images/photos/2.jpg',
+        'images/photos/3.jpg',
+        'images/photos/4.jpg',
+        'images/photos/5.jpg',
+        'images/photos/6.jpg',
+        'images/photos/7.png',
+        'images/photos/8.png',
+        'images/photos/9.png'
+    ];
+
+    let currentImageIndex = 0;
+
+    // Set total images count
+    if (totalImages) {
+        totalImages.textContent = images.length;
+    }
+
+    // Open modal with specific image
+    window.openModal = function(imageIndex) {
+        currentImageIndex = imageIndex;
+        showImage(imageIndex);
+        imageModal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    // Close modal
+    window.closeModal = function() {
+        imageModal.classList.remove('active');
+        document.body.style.overflow = 'auto'; // Restore scrolling
+    }
+
+    // Show specific image
+    function showImage(index) {
+        if (index >= 0 && index < images.length && modalImage) {
+            modalImage.src = images[index];
+            modalImage.alt = `Engineering Club Photo ${index + 1}`;
+            if (currentImageNum) {
+                currentImageNum.textContent = index + 1;
+            }
+        }
+    }
+
+    // Change image (next/previous)
+    window.changeImage = function(direction) {
+        currentImageIndex += direction;
+        
+        // Wrap around if at boundaries
+        if (currentImageIndex >= images.length) {
+            currentImageIndex = 0;
+        } else if (currentImageIndex < 0) {
+            currentImageIndex = images.length - 1;
+        }
+        
+        showImage(currentImageIndex);
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(event) {
+        if (imageModal && imageModal.classList.contains('active')) {
+            switch(event.key) {
+                case 'Escape':
+                    window.closeModal();
+                    break;
+                case 'ArrowLeft':
+                    window.changeImage(-1);
+                    event.preventDefault();
+                    break;
+                case 'ArrowRight':
+                    window.changeImage(1);
+                    event.preventDefault();
+                    break;
+            }
+        }
+    });
+
+    // Close modal when clicking outside the image
+    if (imageModal) {
+        imageModal.addEventListener('click', function(event) {
+            if (event.target === imageModal) {
+                window.closeModal();
+            }
+        });
+    }
+
+    // Close button functionality
+    if (closeBtn) {
+        closeBtn.addEventListener('click', window.closeModal);
+    }
+
+    // Prevent modal content clicks from closing modal
+    const modalContent = document.querySelector('.modal-content');
+    if (modalContent) {
+        modalContent.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    }
+});
