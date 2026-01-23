@@ -21,6 +21,7 @@
                 <!-- Filament used card -->
                 <div class="stat-card" id="filament-card" data-value="1200" data-total="2000" data-unit="g" data-color="#1d711d">
                     <div class="chart" style="--pct:0; --color1:#1d711d; --color2:#e9eef2;">
+                        <div class="chart-arc" aria-hidden="true"></div>
                         <div class="chart-content">
                             <div class="stat-percent">0%</div>
                             <div class="stat-inner">0 g</div>
@@ -33,6 +34,7 @@
                 <!-- Money spent card -->
                 <div class="stat-card" id="money-card" data-value="180" data-total="500" data-unit="$" data-color="#035f2e">
                     <div class="chart" style="--pct:0; --color1:#035f2e; --color2:#f3efe9; --hole-bg:#fff;">
+                        <div class="chart-arc" aria-hidden="true"></div>
                         <div class="chart-content">
                             <div class="stat-percent">0%</div>
                             <div class="stat-inner">$0</div>
@@ -48,36 +50,63 @@
     </section>
 
     <script>
-    // Initialize statistic cards: compute percent, animate numbers and set CSS variable --pct
+    // Initialize statistic cards: compute percent, animate the donut arc and spin while syncing numbers
     (function initStats() {
-        function animateNumber(el, start, end, duration, formatter) {
+        function animateCard(chart, pctNode, innerNode, startValue, endValue, duration, unit, color) {
             const startTime = performance.now();
+            const startPct = 0;
+            const endPct = Math.round((endValue / (Number(chart.closest('.stat-card').dataset.total) || endValue)) * 100);
+
+            // target the arc element (we rotate only the arc so the numbers stay upright)
+            const arc = chart.querySelector('.chart-arc') || chart;
+            arc.style.setProperty('--color1', color);
+
             function step(now) {
                 const t = Math.min(1, (now - startTime) / duration);
-                const v = Math.round(start + (end - start) * t);
-                el.textContent = formatter ? formatter(v) : v;
+
+                // eased progress (easeOutCubic)
+                const p = 1 - Math.pow(1 - t, 3);
+
+                const currentPct = Math.round(startPct + (endPct - startPct) * p);
+                arc.style.setProperty('--pct', currentPct);
+
+                const currentVal = Math.round(startValue + (endValue - startValue) * p);
+                pctNode.textContent = currentPct + '%';
+                if (unit === '$') innerNode.textContent = '$' + currentVal;
+                else innerNode.textContent = currentVal + ' ' + unit;
+
+                // spin while animating (2 full spins over the duration)
+                const rotation = p * 720; // degrees
+                arc.style.transform = 'rotate(' + rotation + 'deg)';
+
                 if (t < 1) requestAnimationFrame(step);
+                else {
+                    // finish settled state
+                    arc.style.transform = 'rotate(0deg)';
+                    arc.style.setProperty('--pct', endPct);
+                }
             }
             requestAnimationFrame(step);
         }
 
         document.querySelectorAll('.stat-card').forEach(card => {
             const value = Number(card.dataset.value) || 0;
-            const total = Number(card.dataset.total) || 0;
+            const total = Number(card.dataset.total) || value || 1;
             const unit = card.dataset.unit || '';
             const color = card.dataset.color || '#1d711d';
-            const pct = total ? Math.round((value / total) * 100) : 0;
             const chart = card.querySelector('.chart');
             const pctNode = card.querySelector('.stat-percent');
             const innerNode = card.querySelector('.stat-inner');
 
-            // set colors and pct css variable
-            chart.style.setProperty('--color1', color);
-            chart.style.setProperty('--pct', pct);
+            // compute end percentage based on data attributes
+            const endPct = Math.round((value / total) * 100);
 
-            // animate percent and inner value
-            animateNumber(pctNode, 0, pct, 800, v => v + '%');
-            animateNumber(innerNode, 0, value, 900, v => unit === '$' ? '$' + v : v + ' ' + unit);
+            // set initial display values
+            pctNode.textContent = '0%';
+            innerNode.textContent = unit === '$' ? '$0' : '0 ' + unit;
+
+            // animate chart (duration in ms)
+            animateCard(chart, pctNode, innerNode, 0, value, 1100, unit, color);
 
             // update description text if total provided
             const desc = card.querySelector('.stat-desc');

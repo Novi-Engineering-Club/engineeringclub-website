@@ -728,7 +728,9 @@ footer {
 }
 
 .chart {
-  /* CSS-powered donut/pie chart using a conic-gradient driven by --pct */
+  /* CSS-powered donut/pie chart using a conic-gradient driven by --pct.
+    The actual gradient lives in .chart-arc so we can rotate only the arc
+    while leaving the inner content unrotated. */
   --pct: 30; /* default percent (0..100) */
   --color1: #1d711d; /* filled color */
   --color2: #e9eef2; /* background slice color */
@@ -736,12 +738,15 @@ footer {
   height: 200px;
   margin: 0 auto;
   border-radius: 50%;
-  background: conic-gradient(var(--color1) 0% calc(var(--pct) * 1%), var(--color2) calc(var(--pct) * 1%) 100%);
+  background: none; /* gradient moved to .chart-arc */
   box-shadow: 0 2px 16px rgba(0,0,0,0.07);
   position: relative;
   display: grid;
   place-items: center;
-  transition: background 450ms cubic-bezier(.2,.9,.2,1);
+  /* Use rAF-driven updates instead of CSS transition so we can sync rotation and numbers */
+  transition: none;
+  transform-origin: center;
+  will-change: transform, background;
 }
 
 .chart::after {
@@ -824,4 +829,15 @@ footer {
   height: 20%;
   font-size: 1.5rem;
   color: #1d711d;
+}
+
+/* The visible arc is rendered inside this child so we can rotate the arc alone */
+.chart-arc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(var(--color1) 0% calc(var(--pct) * 1%), var(--color2) calc(var(--pct) * 1%) 100%);
+  transform-origin: center;
+  will-change: transform, background;
+  pointer-events: none;
 }
