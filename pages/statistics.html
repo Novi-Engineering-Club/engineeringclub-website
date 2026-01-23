@@ -44,8 +44,6 @@
                     <p class="stat-desc">this project / term</p>
                 </div>
             </div>
-
-            <p style="text-align:center; color:#666; margin-top:18px;">Tip: values are editable in the HTML (data-value/data-total) or you can wire them to your backend.</p>
         </div>
     </section>
 
@@ -75,15 +73,13 @@
                 if (unit === '$') innerNode.textContent = '$' + currentVal;
                 else innerNode.textContent = currentVal + ' ' + unit;
 
-                // spin while animating (2 full spins over the duration)
-                const rotation = p * 720; // degrees
-                arc.style.transform = 'rotate(' + rotation + 'deg)';
+                // animate arc growth only (no rotation)
 
                 if (t < 1) requestAnimationFrame(step);
                 else {
                     // finish settled state
-                    arc.style.transform = 'rotate(0deg)';
-                    arc.style.setProperty('--pct', endPct);
+                        // ensure final pct is set
+                        arc.style.setProperty('--pct', endPct);
                 }
             }
             requestAnimationFrame(step);
