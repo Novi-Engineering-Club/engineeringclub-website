@@ -10,6 +10,7 @@
     <script src="/script.js"></script>
 </head>
 <body>
+    <!--Just the Menu-->
     <header>
     <nav>
       <ul>
@@ -19,13 +20,18 @@
       <button onclick="toggleDarkMode()" class="toggle-theme-btn">Toggle Theme</button>
     </nav>
   </header>
+  <!---->
+
+  <!--THe Project Statistics Bar-->
     <section class="team-photo-banner">
         <div class="team-banner-content">
             <header class="hero" style="border-radius: 10%;">
                 <h1>Project Statistics</h1>
                 <p>Overview of filament consumption and money spent — interactive, accessible and responsive.</p>
             </header>
+    <!---->
 
+    <!--element for all of the charts-->
             <div class="stat-grid">
                 <!-- Filament used card -->
                 <div class="stat-card" id="filament-card" data-value="1200" data-total="2000" data-unit="g" data-color="#1d711d">
@@ -56,6 +62,8 @@
         </div>
     </section>
 
+
+    <!--JAVASCRIPT WAS ALL AI (I barely know anything here)-->
     <script>
     // Initialize statistic cards: compute percent, animate the donut arc and spin while syncing numbers
     (function initStats() {
