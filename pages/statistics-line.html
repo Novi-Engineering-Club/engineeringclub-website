@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Statistics — Engineering Club</title>
+    <meta name="description" content="Statistics and metrics for the Engineering Club." />
+    <!-- Link to site stylesheet (adjust path as needed) -->
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/script.js"></script>
+
+    <!--Get chart.js library-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!--Just the Menu-->
+    <header>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../pages/projects.html">Projects</a></li>
+      </ul>
+      <button onclick="toggleDarkMode()" class="toggle-theme-btn">Toggle Theme</button>
+    </nav>
+  </header>
+  <!---->
+
+  <!--THe Project Statistics Bar-->
+    <section class="team-photo-banner">
+        <div class="team-banner-content">
+            <header class="hero" style="border-radius: 10%;">
+                <h1>Project Statistics</h1>
+                <p>Overview of filament consumption and money spent — interactive, accessible and responsive.</p>
+            </header>
+    <!---->
+
+    <!--element for all of the charts-->
+            <div>
+                <!-- All charts will automatically adjust according to the values AND PLZ CHANGE THE 
+                 VALUES ACCORDING TO YOURS IN THE JAVA SCRIPT BOTTOM -->
+                <!-- Manufacturing Time Spent per Project -> used card -->
+                <div class="stat-grid">
+                    <canvas id="chartManu"></canvas>
+                </div>
+
+                <!-- Filament used card -->
+                <div class="stat-grid">
+                    <canvas id="chartFilament"></canvas>
+                </div>
+
+                <!-- Money Spent used card -->
+                <div class="stat-grid">
+                    <canvas id="chartUsage"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+<script src="https://cdn.jsdelivr.net"></script>
+<script>
+        // CHART 1: Manufacturing Time
+        const ctx3 = document.getElementById('chartManu').getContext('2d');
+        new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar'], // Bottom labels
+                datasets: [{
+                    label: 'Manufacturing Time (Total)',
+                    data: [120, 12, 123], // Your numbers
+                    borderColor: '#636362',
+                    tension: 0.3
+                }]
+            },
+            options: { 
+                responsive: true,
+                maintainAspectRatio: false 
+            }
+        });
+
+        // CHART 2: Filament Used
+        const ctx1 = document.getElementById('chartFilament').getContext('2d');
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar'], // Bottom labels
+                datasets: [{
+                    label: 'Filament Used (g)',
+                    data: [120, 12, 123], // Your numbers
+                    borderColor: '#007bff',
+                    tension: 0.3
+                }]
+            },
+            options: { 
+                responsive: true,
+                maintainAspectRatio: false 
+            }
+        });
+
+        // CHART 3: Money Spent
+        const ctx2 = document.getElementById('chartUsage').getContext('2d');
+        new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar'], // Bottom labels
+                datasets: [{
+                    label: 'Money Spent ($)',
+                    data: [50, 150, 80], // Your numbers
+                    borderColor: '#1d711d',
+                    tension: 0.3
+                }]
+            },
+            options: { 
+                responsive: true,
+                maintainAspectRatio: false 
+            }
+        });
+</script>
+</body>
+</html>
