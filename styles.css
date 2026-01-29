@@ -898,3 +898,10 @@ footer {
   right: 55%;
   top: -25px;
 }
+
+/* Overide the css for this html file so that the white bottom doesn't show */
+.page-404-body {
+  margin: 0;
+  min-height: 100vh;
+  background: #064b24;
+}
