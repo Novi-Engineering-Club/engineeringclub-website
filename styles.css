@@ -859,3 +859,42 @@ footer {
   transform: translateY(-1px);
   box-shadow: 0 8px 18px rgba(0,0,0,0.18);
 }
+
+.dot {
+  position: absolute;
+  background: #059334;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+/* Individual dot sizes + positions */
+.dot-1 {
+  width: 180px;
+  height: 180px;
+  left: -40px;
+  top: 10%;
+}
+.dot-2 {
+  width: 70px;
+  height: 70px;
+  left: -15px;
+  bottom: 8%;
+}
+.dot-3 {
+  width: 110px;
+  height: 110px;
+  right: -35px;
+  top: 35%;
+}
+.dot-4 {
+  width: 60px;
+  height: 60px;
+  right: 40px;
+  bottom: -20px;
+}
+.dot-5 {                               /* small dot above card */
+  width: 40px;
+  height: 40px;
+  right: 55%;
+  top: -25px;
+}
