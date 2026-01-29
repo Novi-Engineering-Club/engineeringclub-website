@@ -841,3 +841,21 @@ footer {
   will-change: transform, background;
   pointer-events: none;
 }
+
+.btn {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: none;
+  background: #0b6b2f;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
