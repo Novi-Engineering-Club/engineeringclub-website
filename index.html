@@ -116,6 +116,39 @@
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSefGavRiXDvLPTQ7wB8GJhhBd-Syl5nQ_0aGQ-UJC7LIHP6vg/viewform?usp=dialogl"
         class="cta-btn">Interest Form</a>
     </p>
+
+    <!-- Embedded interest form (Formspree) -->
+    <form action="https://formspree.io/f/mkobkyzb" method="POST" class="contact-form" aria-label="Interest form">
+      <div class="form-row">
+        <label class="form-label">Full name
+          <input type="text" name="name" required placeholder="First and last name">
+        </label>
+        <label class="form-label">Email
+          <input type="email" name="email" required placeholder="your.email@example.com">
+        </label>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">Grade
+          <select name="grade" required>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+        </label>
+        <label class="form-label">Phone (optional)
+          <input type="tel" name="phone" placeholder="(123) 456-7890">
+        </label>
+      </div>
+
+      <label class="form-label">Message
+        <textarea name="message" rows="4" placeholder="Tell us why you want to join or any experience"></textarea>
+      </label>
+
+      <input type="hidden" name="_subject" value="New interest form submission">
+      <button type="submit" class="submit-btn">Send</button>
+    </form>
   </section>
 
   <section id="sponsors" class="sponsors">
