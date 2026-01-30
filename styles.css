@@ -765,3 +765,118 @@ footer {
     font-size: 0.9rem;
   }
 }
+
+.chart {
+  /* CSS-powered donut/pie chart using a conic-gradient driven by --pct.
+    The actual gradient lives in .chart-arc so we can rotate only the arc
+    while leaving the inner content unrotated. */
+  --pct: 30; /* default percent (0..100) */
+  --color1: #1d711d; /* filled color */
+  --color2: #e9eef2; /* background slice color */
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: none; /* gradient moved to .chart-arc */
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  position: relative;
+  display: grid;
+  place-items: center;
+  /* Use rAF-driven updates instead of CSS transition so we can sync rotation and numbers */
+  transition: none;
+  transform-origin: center;
+  will-change: transform, background;
+}
+
+.chart::after {
+  /* inner hole to make it a donut */
+  content: "";
+  position: absolute;
+  width: 58%;
+  height: 58%;
+  background: var(--hole-bg, #fff);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.chart .chart-content {
+  position: relative;
+  z-index: 2; /* above the inner hole */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart .stat-percent {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color1);
+}
+
+.chart .stat-inner {
+  font-size: 0.95rem;
+  color: #333;
+  margin-top: 6px;
+}
+
+/* Statistics cards layout */
+.stat-grid {
+  flex: 1 1 400px;
+  min-width: 300px;
+  height: 400px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.stat-card {
+  background: #fff;
+  width: 280px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  padding: 18px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-card h3 {
+  margin: 6px 0 0 0;
+  font-size: 1.05rem;
+  color: #1d711d;
+}
+
+.stat-desc {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 700px) {
+  .chart { width: 160px; height: 160px; }
+  .stat-card { width: 100%; max-width: 420px; }
+}
+
+.chart-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 20%;
+  font-size: 1.5rem;
+  color: #1d711d;
+}
+
+/* The visible arc is rendered inside this child so we can rotate the arc alone */
+.chart-arc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(var(--color1) 0% calc(var(--pct) * 1%), var(--color2) calc(var(--pct) * 1%) 100%);
+  transform-origin: center;
+  will-change: transform, background;
+  pointer-events: none;
+}
