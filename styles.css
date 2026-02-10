@@ -880,3 +880,67 @@ footer {
   will-change: transform, background;
   pointer-events: none;
 }
+
+.btn {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: none;
+  background: #0b6b2f;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
+
+.dot {
+  position: absolute;
+  background: #059334;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+/* Individual dot sizes + positions */
+.dot-1 {
+  width: 180px;
+  height: 180px;
+  left: -40px;
+  top: 10%;
+}
+.dot-2 {
+  width: 70px;
+  height: 70px;
+  left: -15px;
+  bottom: 8%;
+}
+.dot-3 {
+  width: 110px;
+  height: 110px;
+  right: -35px;
+  top: 35%;
+}
+.dot-4 {
+  width: 60px;
+  height: 60px;
+  right: 40px;
+  bottom: -20px;
+}
+.dot-5 {                               /* small dot above card */
+  width: 40px;
+  height: 40px;
+  right: 55%;
+  top: -25px;
+}
+
+/* Overide the css for this html file so that the white bottom doesn't show */
+.page-404-body {
+  margin: 0;
+  min-height: 100vh;
+  background: #064b24;
+}
