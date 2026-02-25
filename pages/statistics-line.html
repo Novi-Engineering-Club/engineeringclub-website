@@ -5,14 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Statistics — Engineering Club</title>
     <meta name="description" content="Statistics and metrics for the Engineering Club." />
-    <!-- Link to site stylesheet (adjust path as needed) -->
     <link rel="stylesheet" href="/styles.css" />
     <script src="/script.js"></script>
-
-    <!--Get chart.js library-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Background dots container */
+        .bg-dots {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        /* Individual dots */
+        .dot {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(100, 100, 100, 0.3);
+            transition: transform 0.1s ease-out;
+        }
+        
+        /* Dark mode adjustment for dots */
+        body.dark-mode .dot {
+            background: rgba(200, 200, 200, 0.2);
+        }
+        
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            33% { transform: translateY(-20px) translateX(10px); }
+            66% { transform: translateY(10px) translateX(-10px); }
+        }
+        
+        .dot.floating {
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        /* Chart container sizing */
+        .stat-grid {
+            margin: 20px 0;
+            height: 300px;
+            position: relative;
+        }
+        
+        /* Ensure content stays above dots */
+        body {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
 </head>
 <body>
+    <!-- Animated background dots -->
+    <div class="bg-dots" id="bgDots"></div>
+
     <!--Just the Menu-->
     <header>
     <nav>
@@ -30,89 +80,229 @@
         <div class="team-banner-content">
             <header class="hero" style="border-radius: 10%;">
                 <h1>Project Statistics</h1>
-                <p>Overview of filament consumption and money spent</p>
+                <p>Overview of filament consumption, time spent, and budget allocation</p>
             </header>
     <!---->
 
     <!--element for all of the charts-->
             <div>
-                <!-- All charts will automatically adjust according to the values AND PLZ CHANGE THE 
-                 VALUES ACCORDING TO YOURS IN THE JAVA SCRIPT BOTTOM -->
-                <!-- Manufacturing Time Spent per Project -> used card -->
+                <!-- Manufacturing Time Spent per Project -->
                 <div class="stat-grid">
                     <canvas id="chartManu"></canvas>
                 </div>
 
-                <!-- Filament used card -->
+                <!-- Filament used -->
                 <div class="stat-grid">
                     <canvas id="chartFilament"></canvas>
                 </div>
 
-                <!-- Money Spent used card -->
+                <!-- Budget Distribution (Pie Chart) -->
                 <div class="stat-grid">
-                    <canvas id="chartUsage"></canvas>
+                    <canvas id="chartBudget"></canvas>
                 </div>
             </div>
         </div>
     </section>
-<script src="https://cdn.jsdelivr.net"></script>
+
 <script>
-        // CHART 1: Manufacturing Time
-        const ctx3 = document.getElementById('chartManu').getContext('2d');
-        new Chart(ctx3, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar'], // Bottom labels
-                datasets: [{
-                    label: 'Manufacturing Time (Total)',
-                    data: [120, 12, 123], // Your numbers
-                    borderColor: '#636362',
-                    tension: 0.3
-                }]
-            },
-            options: { 
-                responsive: true,
-                maintainAspectRatio: false 
-            }
-        });
+    // ==========================================
+    // CONFIGURATION SECTION - EDIT VALUES HERE
+    // ==========================================
+    
+    const STATS_CONFIG = {
+        // X-axis labels (months/time periods)
+        months: ['Jan', 'Feb', 'Mar', 'Apr'],
+        
+        // Chart 1: Manufacturing Time (Line Chart)
+        manufacturingTime: {
+            label: 'Manufacturing Time (hours)',
+            data: [120, 95, 140, 110],  // EDIT THESE VALUES
+            color: '#636362'
+        },
+        
+        // Chart 2: Filament Used (Line Chart)  
+        filamentUsed: {
+            label: 'Filament Used (grams)',
+            data: [1200, 950, 1400, 1100],  // EDIT THESE VALUES
+            color: '#007bff'
+        },
+        
+        // Chart 3: Budget Distribution (Pie Chart)
+        // Change labels and values to match your spending categories
+        budgetDistribution: {
+            labels: ['Materials', 'Equipment', 'Events', 'Software', 'Misc'],  // CATEGORY NAMES
+            data: [45, 25, 15, 10, 5],  // PERCENTAGES OR AMOUNTS
+            colors: [  // COLORS FOR EACH SLICE
+                '#636362',  // Materials - grey
+                '#007bff',  // Equipment - blue  
+                '#1d711d',  // Events - green
+                '#f4a261',  // Software - orange
+                '#e76f51'   // Misc - red
+            ]
+        }
+    };
 
-        // CHART 2: Filament Used
-        const ctx1 = document.getElementById('chartFilament').getContext('2d');
-        new Chart(ctx1, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar'], // Bottom labels
-                datasets: [{
-                    label: 'Filament Used (g)',
-                    data: [120, 12, 123], // Your numbers
-                    borderColor: '#007bff',
-                    tension: 0.3
-                }]
-            },
-            options: { 
-                responsive: true,
-                maintainAspectRatio: false 
-            }
+    // ==========================================
+    // BACKGROUND DOTS ANIMATION
+    // ==========================================
+    
+    // Create dots
+    const dotsContainer = document.getElementById('bgDots');
+    const numDots = 25;
+    const dots = [];
+    
+    for (let i = 0; i < numDots; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'dot';
+        
+        // Random properties
+        const size = Math.random() * 4 + 2; // 2-6px
+        const left = Math.random() * 100; // 0-100%
+        const top = Math.random() * 100; // 0-100%
+        const opacity = Math.random() * 0.3 + 0.1; // 0.1-0.4
+        const speed = Math.random() * 0.5 + 0.2; // Parallax speed multiplier
+        
+        dot.style.width = size + 'px';
+        dot.style.height = size + 'px';
+        dot.style.left = left + '%';
+        dot.style.top = top + '%';
+        dot.style.opacity = opacity;
+        
+        // Add floating animation to some dots
+        if (Math.random() > 0.5) {
+            dot.classList.add('floating');
+            dot.style.animationDelay = Math.random() * 5 + 's';
+            dot.style.animationDuration = (Math.random() * 10 + 6) + 's';
+        }
+        
+        dotsContainer.appendChild(dot);
+        dots.push({ element: dot, speed: speed, baseTop: top });
+    }
+    
+    // Smooth scroll handler for parallax effect
+    let ticking = false;
+    function updateDots() {
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+        
+        dots.forEach(dot => {
+            // Calculate parallax offset based on scroll position and individual dot speed
+            const offset = scrollY * dot.speed * 0.3;
+            
+            // Add subtle horizontal movement based on scroll
+            const horizontalOffset = Math.sin(scrollY * 0.001 + dot.speed) * 20;
+            
+            dot.element.style.transform = `translateY(${offset}px) translateX(${horizontalOffset}px)`;
         });
+        
+        ticking = false;
+    }
+    
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(updateDots);
+            ticking = true;
+        }
+    });
 
-        // CHART 3: Money Spent
-        const ctx2 = document.getElementById('chartUsage').getContext('2d');
-        new Chart(ctx2, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar'], // Bottom labels
-                datasets: [{
-                    label: 'Money Spent ($)',
-                    data: [50, 150, 80], // Your numbers
-                    borderColor: '#1d711d',
-                    tension: 0.3
-                }]
-            },
-            options: { 
-                responsive: true,
-                maintainAspectRatio: false 
+    // ==========================================
+    // CHART INITIALIZATION
+    // ==========================================
+    
+    // Chart 1: Manufacturing Time (Line Chart)
+    const ctxManu = document.getElementById('chartManu').getContext('2d');
+    new Chart(ctxManu, {
+        type: 'line',
+        data: {
+            labels: STATS_CONFIG.months,
+            datasets: [{
+                label: STATS_CONFIG.manufacturingTime.label,
+                data: STATS_CONFIG.manufacturingTime.data,
+                borderColor: STATS_CONFIG.manufacturingTime.color,
+                backgroundColor: STATS_CONFIG.manufacturingTime.color + '20', // Add transparency
+                fill: true,
+                tension: 0.4, // Smoother curves
+                pointRadius: 5,
+                pointHoverRadius: 8
+            }]
+        },
+        options: { 
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Manufacturing Time by Month',
+                    font: { size: 16 }
+                }
             }
-        });
+        }
+    });
+
+    // Chart 2: Filament Used (Line Chart)
+    const ctxFilament = document.getElementById('chartFilament').getContext('2d');
+    new Chart(ctxFilament, {
+        type: 'line',
+        data: {
+            labels: STATS_CONFIG.months,
+            datasets: [{
+                label: STATS_CONFIG.filamentUsed.label,
+                data: STATS_CONFIG.filamentUsed.data,
+                borderColor: STATS_CONFIG.filamentUsed.color,
+                backgroundColor: STATS_CONFIG.filamentUsed.color + '20',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 5,
+                pointHoverRadius: 8
+            }]
+        },
+        options: { 
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Filament Consumption by Month',
+                    font: { size: 16 }
+                }
+            }
+        }
+    });
+
+    // Chart 3: Budget Distribution (Pie Chart)
+    const ctxBudget = document.getElementById('chartBudget').getContext('2d');
+    new Chart(ctxBudget, {
+        type: 'pie',
+        data: {
+            labels: STATS_CONFIG.budgetDistribution.labels,
+            datasets: [{
+                data: STATS_CONFIG.budgetDistribution.data,
+                backgroundColor: STATS_CONFIG.budgetDistribution.colors,
+                borderWidth: 2,
+                borderColor: '#fff',
+                hoverOffset: 10
+            }]
+        },
+        options: { 
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Budget Distribution by Category',
+                    font: { size: 16 }
+                },
+                legend: {
+                    position: 'right',
+                    labels: {
+                        padding: 15,
+                        font: { size: 12 }
+                    }
+                }
+            }
+        }
+    });
 </script>
 </body>
 </html>
