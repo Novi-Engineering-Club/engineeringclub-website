@@ -58,7 +58,11 @@ document.addEventListener('DOMContentLoaded', function() {
         'images/photos/6.jpg',
         'images/photos/7.png',
         'images/photos/8.png',
-        'images/photos/9.png'
+        'images/photos/9.png',
+        'images/photos/10.jpg',
+        'images/photos/11.jpg',
+        'images/photos/12.jpg',
+        'images/photos/13.jpg'
     ];
 
     let currentImageIndex = 0;
@@ -67,6 +71,36 @@ document.addEventListener('DOMContentLoaded', function() {
     if (totalImages) {
         totalImages.textContent = images.length;
     }
+
+    // Mobile gallery elements
+    const mobileGalleryImage = document.getElementById('mobileGalleryImage');
+    const mobileCurrentImageNum = document.getElementById('mobileCurrentImageNum');
+    const mobileTotalImages = document.getElementById('mobileTotalImages');
+
+    // Set mobile gallery total
+    if (mobileTotalImages) {
+        mobileTotalImages.textContent = images.length;
+    }
+
+    // Mobile gallery click handler
+    if (mobileGalleryImage) {
+        mobileGalleryImage.addEventListener('click', function() {
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            updateMobileGallery();
+        });
+    }
+
+    // Update mobile gallery display
+    function updateMobileGallery() {
+        if (mobileGalleryImage && mobileCurrentImageNum) {
+            mobileGalleryImage.src = images[currentImageIndex];
+            mobileGalleryImage.alt = `Engineering Club Photo ${currentImageIndex + 1}`;
+            mobileCurrentImageNum.textContent = currentImageIndex + 1;
+        }
+    }
+
+    // Initialize mobile gallery
+    updateMobileGallery();
 
     // Open modal with specific image
     window.openModal = function(imageIndex) {
